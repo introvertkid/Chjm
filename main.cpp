@@ -1,34 +1,18 @@
-#include <iostream>
-#include <SDL2/SDL.h>
+#include "Game.h"
+#include "Game.cpp"
 
-using namespace std;
+Game *myGame = new Game();
 
 int main(int argc, char *argv[])
 {
-    SDL_Init(SDL_INIT_EVERYTHING);
+    myGame->Init();
 
-    SDL_Window *window = SDL_CreateWindow("Hello", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                          400, 600, SDL_WINDOW_ALLOW_HIGHDPI);
-
-    if (window == NULL)
+    while (myGame->getGameState())
     {
-        cout << "Error" << SDL_GetError() << '\n';
-        return 1;
+        myGame->Event();
     }
 
-    SDL_Event windowEvent;
+    myGame->Close();
 
-    while (true)
-    {
-        if (SDL_PollEvent(&windowEvent))
-        {
-            if (SDL_QUIT == windowEvent.type)
-                break;
-        }
-    }
-
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-
-    return EXIT_SUCCESS;
+    return 0;
 }
