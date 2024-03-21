@@ -1,5 +1,4 @@
 #include "Game.h"
-#include "Game.cpp"
 
 Game *myGame = new Game();
 
