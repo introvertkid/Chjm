@@ -1,2 +1,2 @@
 all:
-	g++ -I SDL/include -L SDL/lib -o main main.cpp -lmingw32 -lSDL2main -lSDL2
+	g++ -I SDL/include/SDL2 -L SDL/lib -o main src/*.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image

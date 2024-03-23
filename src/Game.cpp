@@ -25,12 +25,48 @@ void Game::Init()
         }
         else
         {
-            screenSurface = SDL_GetWindowSurface(window);
+            // screenSurface = SDL_GetWindowSurface(window);
             renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-            gameState = 1;
+            if (renderer)
+            {
+                cout << "Succeeded !" << '\n';
+                gameState = 1;
+                player = TextureManager::Texture("image/bird0.png", renderer);
+                if (player == NULL)
+                    cout << "Could not load image";
+            }
+            else
+            {
+                cout << "Renderer = NULL !!! " << SDL_GetError() << '\n';
+            }
         }
     }
+}
+
+void Game::Update()
+{
+    srcPLayer.h = 60;
+    srcPLayer.w = 80;
+    srcPLayer.x = srcPLayer.y = 0;
+
+    destPlayer.h = 60;
+    destPlayer.w = 40;
+    destPlayer.x = destPlayer.y = 0;
+}
+
+void Game::Event()
+{
+    SDL_PollEvent(&windowEvent);
+    if (windowEvent.type == SDL_QUIT)
+        gameState = 0;
+}
+
+void Game::Render()
+{
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, player, &srcPLayer, &destPlayer);
+    SDL_RenderPresent(renderer);
 }
 
 void Game::Close()
@@ -42,13 +78,6 @@ void Game::Close()
     renderer = NULL;
 
     SDL_Quit();
-}
-
-void Game::Event()
-{
-    SDL_PollEvent(&windowEvent);
-    if (windowEvent.type == SDL_QUIT)
-        gameState = 0;
 }
 
 bool Game::getGameState()
