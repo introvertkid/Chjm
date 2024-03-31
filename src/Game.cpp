@@ -32,9 +32,8 @@ void Game::Init()
             {
                 cout << "Succeeded !" << '\n';
                 gameState = 1;
-                player = TextureManager::Texture("image/bird0.png", renderer);
-                if (player == NULL)
-                    cout << "Could not load image";
+                player.CreateTexture("image/bird0.png", renderer);
+                bg.CreateTexture("image/bgDay.png", renderer);
             }
             else
             {
@@ -46,13 +45,8 @@ void Game::Init()
 
 void Game::Update()
 {
-    srcPLayer.h = 60;
-    srcPLayer.w = 80;
-    srcPLayer.x = srcPLayer.y = 0;
-
-    destPlayer.h = 60;
-    destPlayer.w = 40;
-    destPlayer.x = destPlayer.y = 0;
+    player.setSrc(0, 0, 80, 60);
+    player.setDest(0, 0, 40, 60);
 }
 
 void Game::Event()
@@ -65,7 +59,8 @@ void Game::Event()
 void Game::Render()
 {
     SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, player, &srcPLayer, &destPlayer);
+    bg.Render(renderer, bg.getTexture());
+    player.Render(renderer, player.getTexture(), player.getSrc(), player.getDest());
     SDL_RenderPresent(renderer);
 }
 
