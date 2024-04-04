@@ -5,12 +5,12 @@ SDL_Texture *Object::getTexture()
     return Texture;
 }
 
-SDL_Rect Object::getSrc()
+SDL_Rect &Object::getSrc()
 {
     return src;
 }
 
-SDL_Rect Object::getDest()
+SDL_Rect &Object::getDest()
 {
     return dest;
 }

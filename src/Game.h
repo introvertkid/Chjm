@@ -11,12 +11,13 @@ using namespace std;
 class Game
 {
 private:
+    const int WIDTH = 480;
+    const int HEIGHT = 650;
     Player player;
     Background bg;
     SDL_Window *window;
     SDL_Renderer *renderer;
-    SDL_Surface *screenSurface;
-    SDL_Event windowEvent;
+    SDL_Event event;
     bool gameState;
 
 public:
