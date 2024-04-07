@@ -5,20 +5,27 @@
 #include "TextureManager.h"
 #include "Player.h"
 #include "Background.h"
+#include "Pipe.h"
 
 using namespace std;
 
 class Game
 {
 private:
-    const int WIDTH = 480;
-    const int HEIGHT = 650;
+    const int screenWIDTH = 480;
+    const int screenHEIGHT = 650;
+    bool gameState;
+    bool isAnyKeyPressed;
+    bool updatePipe2;
+
     Player player;
     Background bg;
+    Pipe topPipe[2];
+    Pipe botPipe[2];
+
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_Event event;
-    bool gameState;
 
 public:
     Game();

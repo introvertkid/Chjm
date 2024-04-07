@@ -4,10 +4,16 @@ Game::Game()
 {
     window = NULL;
     renderer = NULL;
-    gameState = 0;
+    gameState = isAnyKeyPressed = updatePipe2 = 0;
 
     player.setSrc(0, 0, 19, 16);
-    player.setDest(0, 0, 50, 50);
+    player.setDest(screenWIDTH / 2, screenHEIGHT / 2, 50, 50);
+
+    for (int i = 0; i < 2; i++)
+    {
+        topPipe[i].setSrc(0, 0, 25, 100);
+        botPipe[i].setSrc(0, 0, 25, 100);
+    }
 }
 
 void Game::Init()
@@ -19,7 +25,7 @@ void Game::Init()
     else
     {
         window = SDL_CreateWindow("Chjm", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                  WIDTH, HEIGHT, SDL_WINDOW_ALLOW_HIGHDPI);
+                                  screenWIDTH, screenHEIGHT, SDL_WINDOW_ALLOW_HIGHDPI);
         if (window == NULL)
         {
             cout << "Window could not be created " << SDL_GetError() << '\n';
@@ -31,9 +37,16 @@ void Game::Init()
             if (renderer)
             {
                 cout << "Succeeded !" << '\n';
+
                 gameState = 1;
+
                 player.CreateTexture("image/2birds.png", renderer);
                 bg.CreateTexture("image/bgDay.png", renderer);
+                for (int i = 0; i < 2; i++)
+                {
+                    topPipe[i].CreateTexture("image/topPipe.png", renderer);
+                    botPipe[i].CreateTexture("image/botPipe.png", renderer);
+                }
             }
             else
             {
@@ -45,6 +58,17 @@ void Game::Init()
 
 void Game::Update()
 {
+    player.Update();
+
+    botPipe[0].botPipeUpdate();
+    topPipe[0].topPipeUpdate();
+    if (updatePipe2 == 0 && botPipe[0].getXpos() <= screenWIDTH / 2)
+        updatePipe2 = 1;
+    if (updatePipe2)
+    {
+        botPipe[1].botPipeUpdate();
+        topPipe[1].topPipeUpdate();
+    }
 }
 
 void Game::Event()
@@ -57,6 +81,7 @@ void Game::Event()
     }
     if (event.type == SDL_KEYDOWN)
     {
+        isAnyKeyPressed = 1;
         if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_SPACE)
         {
             if (!player.isJumping())
@@ -65,7 +90,7 @@ void Game::Event()
                 player.Gravity();
         }
     }
-    else
+    else if (isAnyKeyPressed)
         player.Gravity();
 }
 
@@ -75,6 +100,11 @@ void Game::Render()
 
     bg.Render(renderer);
     player.Render(renderer);
+    for (int i = 0; i < 2; i++)
+    {
+        botPipe[i].Render(renderer);
+        topPipe[i].Render(renderer);
+    }
 
     SDL_RenderPresent(renderer);
 }
