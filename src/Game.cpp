@@ -4,7 +4,7 @@ Game::Game()
 {
     window = NULL;
     renderer = NULL;
-    gameState = isAnyKeyPressed = updatePipe2 = 0;
+    gameState = isAnyKeyPressed = updatePipe2 = isDead = 0;
 
     player.setSrc(0, 0, 19, 16);
     player.setDest(screenWIDTH / 2, screenHEIGHT / 2, 50, 50);
@@ -62,19 +62,21 @@ void Game::Update()
 
     botPipe[0].botPipeUpdate();
     topPipe[0].topPipeUpdate();
-    if (updatePipe2 == 0 && botPipe[0].getXpos() <= screenWIDTH / 2)
+    if (updatePipe2 == 0 && botPipe[0].getXpos() <= screenWIDTH / 2 - 35)
         updatePipe2 = 1;
     if (updatePipe2)
     {
         botPipe[1].botPipeUpdate();
         topPipe[1].topPipeUpdate();
     }
+
+    isDead = Game::detectCollision();
 }
 
 void Game::Event()
 {
     SDL_PollEvent(&event);
-    if (event.type == SDL_QUIT)
+    if (event.type == SDL_QUIT || isDead)
     {
         gameState = 0;
         return;
@@ -107,6 +109,27 @@ void Game::Render()
     }
 
     SDL_RenderPresent(renderer);
+}
+
+bool Game::detectCollision()
+{
+    SDL_Rect Bird = player.getDest();
+    int bX1 = Bird.x, bX2 = bX1 + 19, bY1 = Bird.y, bY2 = bY1 + 16;
+    for (int i = 0; i < 2; i++)
+    {
+        SDL_Rect Pipe = botPipe[i].getDest();
+        // detect collision with bottom pipe
+        int y1 = Pipe.y, y2 = y1 + Pipe.h, x1 = Pipe.x, x2 = x1 + Pipe.w;
+        if (bX2 >= x1 && bX2 <= x2 && bY2 >= y1 && bY2 <= y2)
+            return 1;
+
+        // detect collision with top pipe
+        Pipe = topPipe[i].getDest();
+        y1 = Pipe.y, y2 = y1 + Pipe.h, x1 = Pipe.x, x2 = x1 + Pipe.w;
+        if (bX2 >= x1 && bX2 <= x2 && bY1 >= y1 && bY1 <= y2)
+            return 1;
+    }
+    return 0;
 }
 
 void Game::Close()

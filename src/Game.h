@@ -17,6 +17,7 @@ private:
     bool gameState;
     bool isAnyKeyPressed;
     bool updatePipe2;
+    bool isDead;
 
     Player player;
     Background bg;
@@ -30,6 +31,7 @@ private:
 public:
     Game();
     bool getGameState();
+    bool detectCollision();
     void Init();
     void Close();
     void Event();
