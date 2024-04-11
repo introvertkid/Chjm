@@ -14,6 +14,7 @@ Game::Game()
         topPipe[i].setSrc(0, 0, 25, 100);
         botPipe[i].setSrc(0, 0, 25, 100);
     }
+    botPipe[0].initPipeHeight();
 }
 
 void Game::Init()
@@ -60,17 +61,20 @@ void Game::Update()
 {
     player.Update();
 
-    botPipe[0].botPipeUpdate();
-    topPipe[0].topPipeUpdate();
+    botPipe[0].Update(0, 0);
+    topPipe[0].Update(0, 1);
     if (updatePipe2 == 0 && botPipe[0].getXpos() <= screenWIDTH / 2 - 35)
-        updatePipe2 = 1;
-    if (updatePipe2)
     {
-        botPipe[1].botPipeUpdate();
-        topPipe[1].topPipeUpdate();
+        updatePipe2 = 1;
     }
 
-    isDead = Game::detectCollision();
+    if (updatePipe2)
+    {
+        botPipe[1].Update(1, 0);
+        topPipe[1].Update(1, 1);
+    }
+
+    isDead = detectCollision();
 }
 
 void Game::Event()

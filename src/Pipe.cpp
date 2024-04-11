@@ -2,30 +2,30 @@
 
 Pipe::Pipe()
 {
-    botPipeHeight = Gen(10, screenHEIGHT / 2);
     Xpos = screenWIDTH;
 }
 
-void Pipe::Update(bool isTopPipe)
+void Pipe::initPipeHeight()
+{
+    for (int i = 0; i < 2; i++)
+    {
+        botPipeHeight[i] = Gen(10, screenHEIGHT / 2);
+        topPipeHeight[i] = screenHEIGHT - botPipeHeight[i] - spaceUD;
+    }
+}
+
+void Pipe::Update(int i, bool isTopPipe)
 {
     if (Xpos <= -pipeWidth)
     {
-        botPipeHeight = Gen(10, screenHEIGHT / 2);
+        botPipeHeight[i] = Gen(10, screenHEIGHT / 2);
+        topPipeHeight[i] = screenHEIGHT - botPipeHeight[i] - spaceUD;
         Xpos = screenWIDTH;
     }
-    int Ypos = isTopPipe ? 0 : screenHEIGHT - botPipeHeight;
-    setDest(Xpos, Ypos, pipeWidth, botPipeHeight);
+    int Ypos = (isTopPipe ? 0 : screenHEIGHT - botPipeHeight[i]);
+    int H = isTopPipe ? topPipeHeight[i] : botPipeHeight[i];
+    setDest(Xpos, Ypos, pipeWidth, H);
     Xpos--;
-}
-
-void Pipe::topPipeUpdate()
-{
-    Update(1);
-}
-
-void Pipe::botPipeUpdate()
-{
-    Update(0);
 }
 
 int Pipe::getXpos()
@@ -33,34 +33,12 @@ int Pipe::getXpos()
     return Xpos;
 }
 
-// void Pipe::topPipeUpdate()
-// {
-//     if (Xpos <= pipeWidth)
-//     {
-//         // botPipeHeight = Gen(10, screenHEIGHT / 2);
-//         Xpos = screenWIDTH;
-//     }
-//     setDest(Xpos, 0, pipeWidth, screenHEIGHT - botPipeHeight - spaceUD);
-//     Xpos--;
-// }
-
-// void Pipe::botPipeUpdate()
-// {
-//     if (Xpos <= pipeWidth)
-//     {
-//         botPipeHeight = Gen(10, screenHEIGHT / 2);
-//         Xpos = screenWIDTH;
-//     }
-//     setDest(Xpos, screenHEIGHT - botPipeHeight, pipeWidth, botPipeHeight);
-//     Xpos--;
-// }
+int Pipe::Gen(int lo, int hi)
+{
+    return rng() % (hi - lo + 1) + lo;
+}
 
 void Pipe::Render(SDL_Renderer *ren)
 {
     SDL_RenderCopy(ren, getTexture(), &getSrc(), &getDest());
-}
-
-int Pipe::Gen(int lo, int hi)
-{
-    return rng() % (hi - lo + 1) + lo;
 }
