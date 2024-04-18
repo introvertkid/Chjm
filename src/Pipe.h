@@ -19,7 +19,6 @@ private:
 
 public:
     Pipe();
-    void Render(SDL_Renderer *ren);
     void Update(int i, bool isTopPipe);
     void initPipeHeight();
     int getXpos();

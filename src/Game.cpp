@@ -55,6 +55,26 @@ void Game::Init()
             }
         }
     }
+    if (TTF_Init() < 0)
+    {
+        cout << "Cannot initialize TTF" << SDL_GetError() << '\n';
+    }
+    else
+    {
+        scoreFont = TTF_OpenFont("TextFont/flappy-font.ttf", 24);
+        if (scoreFont == NULL)
+            cout << "Cannot open font: " << SDL_GetError() << '\n';
+        surfaceMessage = TTF_RenderText_Solid(scoreFont, "abcxyz", White);
+        if (surfaceMessage == NULL)
+            cout << "Cannot render text: " << SDL_GetError() << '\n';
+        Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+        if (Message == NULL)
+            cout << "Cannot create text from surface: " << SDL_GetError() << '\n';
+        Message_rect.x = 0;
+        Message_rect.y = 0;
+        Message_rect.w = 50;
+        Message_rect.h = 50;
+    }
 }
 
 void Game::Update()
@@ -75,12 +95,17 @@ void Game::Update()
     }
 
     isDead = detectCollision();
+    if (isDead)
+    {
+        gameState = 0;
+        return;
+    }
 }
 
 void Game::Event()
 {
     SDL_PollEvent(&event);
-    if (event.type == SDL_QUIT || isDead)
+    if (event.type == SDL_QUIT)
     {
         gameState = 0;
         return;
@@ -104,6 +129,8 @@ void Game::Render()
 {
     SDL_RenderClear(renderer);
 
+    SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
+
     bg.Render(renderer);
     player.Render(renderer);
     for (int i = 0; i < 2; i++)
@@ -119,18 +146,20 @@ bool Game::detectCollision()
 {
     SDL_Rect Bird = player.getDest();
     int bX1 = Bird.x, bX2 = bX1 + 19, bY1 = Bird.y, bY2 = bY1 + 16;
+    if (bY1 <= 0 || bY2 >= screenHEIGHT)
+        return 1;
     for (int i = 0; i < 2; i++)
     {
         SDL_Rect Pipe = botPipe[i].getDest();
         // detect collision with bottom pipe
         int y1 = Pipe.y, y2 = y1 + Pipe.h, x1 = Pipe.x, x2 = x1 + Pipe.w;
-        if (bX2 >= x1 && bX2 <= x2 && bY2 >= y1 && bY2 <= y2)
+        if (bX2 >= x1 && bX2 <= x2 && bY2 >= y1)
             return 1;
 
         // detect collision with top pipe
         Pipe = topPipe[i].getDest();
         y1 = Pipe.y, y2 = y1 + Pipe.h, x1 = Pipe.x, x2 = x1 + Pipe.w;
-        if (bX2 >= x1 && bX2 <= x2 && bY1 >= y1 && bY1 <= y2)
+        if (bX2 >= x1 && bX2 <= x2 && bY1 <= y2)
             return 1;
     }
     return 0;

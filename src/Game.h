@@ -2,10 +2,12 @@
 #include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #include "TextureManager.h"
 #include "Player.h"
 #include "Background.h"
 #include "Pipe.h"
+#include "TextObject.h"
 
 using namespace std;
 
@@ -23,6 +25,12 @@ private:
     Background bg;
     Pipe topPipe[2];
     Pipe botPipe[2];
+
+    TTF_Font *scoreFont;
+    SDL_Color White = {255, 255, 255};
+    SDL_Surface *surfaceMessage;
+    SDL_Texture *Message;
+    SDL_Rect Message_rect;
 
     SDL_Window *window;
     SDL_Renderer *renderer;

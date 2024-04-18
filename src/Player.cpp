@@ -9,7 +9,7 @@ void Player::Update()
 
 void Player::Gravity()
 {
-    accelerator += 0.07;
+    accelerator += 0.05;
     if (isJumping())
     {
         jumpHeight += gravity;
@@ -17,7 +17,7 @@ void Player::Gravity()
         if (jumpHeight > 0)
         {
             jumpState = 0;
-            jumpHeight = -6;
+            jumpHeight = -5;
         }
     }
     else
@@ -31,7 +31,7 @@ void Player::Gravity()
 void Player::Jump()
 {
     currentJumpTimer = SDL_GetTicks();
-    if (currentJumpTimer - lastJumpTimer > 120)
+    if (currentJumpTimer - lastJumpTimer > 30)
     {
         accelerator = 0;
         jumpState = 1;
@@ -41,11 +41,6 @@ void Player::Jump()
     {
         Gravity();
     }
-}
-
-void Player::Render(SDL_Renderer *ren)
-{
-    SDL_RenderCopy(ren, getTexture(), &getSrc(), &getDest());
 }
 
 bool Player::isJumping()

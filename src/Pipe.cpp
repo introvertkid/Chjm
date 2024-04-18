@@ -37,8 +37,3 @@ int Pipe::Gen(int lo, int hi)
 {
     return rng() % (hi - lo + 1) + lo;
 }
-
-void Pipe::Render(SDL_Renderer *ren)
-{
-    SDL_RenderCopy(ren, getTexture(), &getSrc(), &getDest());
-}

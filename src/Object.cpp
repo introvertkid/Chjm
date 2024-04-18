@@ -1,5 +1,10 @@
 #include "Object.h"
 
+void Object::Render(SDL_Renderer *ren)
+{
+    SDL_RenderCopy(ren, getTexture(), &getSrc(), &getDest());
+}
+
 SDL_Texture *Object::getTexture()
 {
     return Texture;

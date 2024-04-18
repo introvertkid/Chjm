@@ -19,7 +19,6 @@ private:
     bool jumpState;
 
 public:
-    void Render(SDL_Renderer *ren);
     void Update();
     bool isJumping();
     void Jump();
