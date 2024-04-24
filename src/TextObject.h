@@ -10,5 +10,5 @@ private:
 public:
     SDL_Texture *getTexture();
     void Render(SDL_Renderer *ren);
-    void CreateText(SDL_Renderer *ren, TTF_Font *curFont, SDL_Color color);
+    void CreateText(SDL_Renderer *ren, TTF_Font *curFont, SDL_Color color, string Text);
 };

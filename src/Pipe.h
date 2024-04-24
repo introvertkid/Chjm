@@ -14,8 +14,9 @@ private:
     const int screenHEIGHT = 650;
     const int spaceUD = 200;
     const int pipeWidth = 70;
-    int Xpos;
+    int Xpos = screenWIDTH;
     int pipeH;
+    bool isPassed = 0;
 
 public:
     Pipe();
@@ -23,4 +24,6 @@ public:
     void initPipeHeight();
     int getXpos();
     int Gen(int lo, int hi);
+    bool GetPassedState();
+    void SetPassedState();
 };

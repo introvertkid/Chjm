@@ -65,8 +65,8 @@ void Game::Init()
         if (scoreFont == NULL)
             cout << "Cannot open font: " << SDL_GetError() << '\n';
 
-        Message.CreateText(renderer, scoreFont, blackColor);
-        Message.setSrc(0, 0, 0, 0);
+        Message.CreateText(renderer, scoreFont, blackColor, to_string(score));
+        // Message.setSrc(0, 0, 0, 0);
         Message.setDest(screenWIDTH / 2 - 25, 0, 50, 50);
     }
 }
@@ -93,6 +93,17 @@ void Game::Update()
     {
         gameState = 0;
         return;
+    }
+
+    // update score ?
+    for (int i = 0; i < 2; i++)
+    {
+        if (botPipe[i].getXpos() + 70 < player.getDest().x && botPipe[i].GetPassedState() == 0)
+        {
+            score++;
+            botPipe[i].SetPassedState();
+            Message.CreateText(renderer, scoreFont, blackColor, to_string(score));
+        }
     }
 }
 
@@ -132,10 +143,7 @@ void Game::Render()
         topPipe[i].Render(renderer);
     }
 
-    if (Message.getTexture() == NULL)
-        cout << "vcl" << '\n';
     Message.Render(renderer);
-    // SDL_RenderCopy(renderer, Message.getTexture(), NULL, &Message.getDest());
 
     SDL_RenderPresent(renderer);
 }

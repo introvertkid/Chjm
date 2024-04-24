@@ -2,7 +2,7 @@
 
 Pipe::Pipe()
 {
-    Xpos = screenWIDTH;
+    // Xpos = screenWIDTH;
 }
 
 void Pipe::initPipeHeight()
@@ -21,6 +21,7 @@ void Pipe::Update(int i, bool isTopPipe)
         botPipeHeight[i] = Gen(10, screenHEIGHT / 2);
         topPipeHeight[i] = screenHEIGHT - botPipeHeight[i] - spaceUD;
         Xpos = screenWIDTH;
+        isPassed = 0;
     }
     int Ypos = (isTopPipe ? 0 : screenHEIGHT - botPipeHeight[i]);
     int H = isTopPipe ? topPipeHeight[i] : botPipeHeight[i];
@@ -31,6 +32,16 @@ void Pipe::Update(int i, bool isTopPipe)
 int Pipe::getXpos()
 {
     return Xpos;
+}
+
+bool Pipe::GetPassedState()
+{
+    return isPassed;
+}
+
+void Pipe::SetPassedState()
+{
+    isPassed = 1;
 }
 
 int Pipe::Gen(int lo, int hi)
