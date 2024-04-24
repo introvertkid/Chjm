@@ -4,7 +4,7 @@ Game::Game()
 {
     window = NULL;
     renderer = NULL;
-    gameState = isAnyKeyPressed = updatePipe2 = isDead = 0;
+    gameState = isAnyKeyPressed = updatePipe2 = isDead = score = 0;
 
     player.setSrc(0, 0, 19, 16);
     player.setDest(screenWIDTH / 2, screenHEIGHT / 2, 50, 50);
@@ -64,16 +64,10 @@ void Game::Init()
         scoreFont = TTF_OpenFont("TextFont/flappy-font.ttf", 24);
         if (scoreFont == NULL)
             cout << "Cannot open font: " << SDL_GetError() << '\n';
-        surfaceMessage = TTF_RenderText_Solid(scoreFont, "abcxyz", White);
-        if (surfaceMessage == NULL)
-            cout << "Cannot render text: " << SDL_GetError() << '\n';
-        Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
-        if (Message == NULL)
-            cout << "Cannot create text from surface: " << SDL_GetError() << '\n';
-        Message_rect.x = 0;
-        Message_rect.y = 0;
-        Message_rect.w = 50;
-        Message_rect.h = 50;
+
+        Message.CreateText(renderer, scoreFont, blackColor);
+        Message.setSrc(0, 0, 0, 0);
+        Message.setDest(screenWIDTH / 2 - 25, 0, 50, 50);
     }
 }
 
@@ -129,9 +123,8 @@ void Game::Render()
 {
     SDL_RenderClear(renderer);
 
-    SDL_RenderCopy(renderer, Message, NULL, &Message_rect);
-
     bg.Render(renderer);
+
     player.Render(renderer);
     for (int i = 0; i < 2; i++)
     {
@@ -139,13 +132,18 @@ void Game::Render()
         topPipe[i].Render(renderer);
     }
 
+    if (Message.getTexture() == NULL)
+        cout << "vcl" << '\n';
+    Message.Render(renderer);
+    // SDL_RenderCopy(renderer, Message.getTexture(), NULL, &Message.getDest());
+
     SDL_RenderPresent(renderer);
 }
 
 bool Game::detectCollision()
 {
     SDL_Rect Bird = player.getDest();
-    int bX1 = Bird.x, bX2 = bX1 + 19, bY1 = Bird.y, bY2 = bY1 + 16;
+    int bX1 = Bird.x, bX2 = bX1 + 50, bY1 = Bird.y, bY2 = bY1 + 50;
     if (bY1 <= 0 || bY2 >= screenHEIGHT)
         return 1;
     for (int i = 0; i < 2; i++)
@@ -174,6 +172,8 @@ void Game::Close()
     renderer = NULL;
 
     SDL_Quit();
+    IMG_Quit();
+    TTF_Quit();
 }
 
 bool Game::getGameState()

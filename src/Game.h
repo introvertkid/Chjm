@@ -16,6 +16,7 @@ class Game
 private:
     const int screenWIDTH = 480;
     const int screenHEIGHT = 650;
+    int score;
     bool gameState;
     bool isAnyKeyPressed;
     bool updatePipe2;
@@ -27,10 +28,8 @@ private:
     Pipe botPipe[2];
 
     TTF_Font *scoreFont;
-    SDL_Color White = {255, 255, 255};
-    SDL_Surface *surfaceMessage;
-    SDL_Texture *Message;
-    SDL_Rect Message_rect;
+    SDL_Color blackColor = {0, 0, 0};
+    TextObject Message;
 
     SDL_Window *window;
     SDL_Renderer *renderer;
