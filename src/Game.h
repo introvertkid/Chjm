@@ -29,7 +29,7 @@ private:
 
     TTF_Font *scoreFont;
     SDL_Color blackColor = {0, 0, 0};
-    TextObject Message;
+    TextObject scoreText;
 
     SDL_Window *window;
     SDL_Renderer *renderer;

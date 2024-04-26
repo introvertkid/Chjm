@@ -65,9 +65,9 @@ void Game::Init()
         if (scoreFont == NULL)
             cout << "Cannot open font: " << SDL_GetError() << '\n';
 
-        Message.CreateText(renderer, scoreFont, blackColor, to_string(score));
-        // Message.setSrc(0, 0, 0, 0);
-        Message.setDest(screenWIDTH / 2 - 25, 0, 50, 50);
+        scoreText.CreateText(renderer, scoreFont, blackColor, to_string(score));
+        // scoreText.setSrc(0, 0, 0, 0);
+        scoreText.setDest(screenWIDTH / 2 - 25, 0, 50, 50);
     }
 }
 
@@ -102,7 +102,7 @@ void Game::Update()
         {
             score++;
             botPipe[i].SetPassedState();
-            Message.CreateText(renderer, scoreFont, blackColor, to_string(score));
+            scoreText.CreateText(renderer, scoreFont, blackColor, to_string(score));
         }
     }
 }
@@ -143,7 +143,7 @@ void Game::Render()
         topPipe[i].Render(renderer);
     }
 
-    Message.Render(renderer);
+    scoreText.Render(renderer);
 
     SDL_RenderPresent(renderer);
 }
