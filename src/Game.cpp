@@ -15,6 +15,9 @@ Game::Game()
         botPipe[i].setSrc(0, 0, 25, 100);
     }
     botPipe[0].initPipeHeight();
+
+    PLAY.setSrc(0, 0, 49, 21);
+    PLAY.setDest(160, 200, 170, 80);
 }
 
 void Game::Init()
@@ -48,6 +51,10 @@ void Game::Init()
                     topPipe[i].CreateTexture("image/topPipe.png", renderer);
                     botPipe[i].CreateTexture("image/botPipe.png", renderer);
                 }
+
+                PLAY.CreateTexture("image/playButtonUI.png", renderer);
+                if (PLAY.getTexture() == NULL)
+                    cout << "NULL ne " << '\n';
             }
             else
             {
@@ -66,13 +73,21 @@ void Game::Init()
             cout << "Cannot open font: " << SDL_GetError() << '\n';
 
         scoreText.CreateText(renderer, scoreFont, blackColor, to_string(score));
-        // scoreText.setSrc(0, 0, 0, 0);
         scoreText.setDest(screenWIDTH / 2 - 25, 0, 50, 50);
     }
 }
 
 void Game::Update()
 {
+    if (insideButton(PLAY))
+    {
+        PLAY.setSrc(49, 0, 49, 21);
+    }
+    else
+    {
+        PLAY.setSrc(0, 0, 49, 21);
+    }
+
     player.Update();
 
     botPipe[0].Update(0, 0);
@@ -91,7 +106,7 @@ void Game::Update()
     isDead = detectCollision();
     if (isDead)
     {
-        gameState = 0;
+        // gameState = 0;
         return;
     }
 
@@ -136,14 +151,16 @@ void Game::Render()
 
     bg.Render(renderer);
 
-    player.Render(renderer);
-    for (int i = 0; i < 2; i++)
-    {
-        botPipe[i].Render(renderer);
-        topPipe[i].Render(renderer);
-    }
+    PLAY.Render(renderer);
 
-    scoreText.Render(renderer);
+    // player.Render(renderer);
+    // for (int i = 0; i < 2; i++)
+    // {
+    //     botPipe[i].Render(renderer);
+    //     topPipe[i].Render(renderer);
+    // }
+
+    // scoreText.Render(renderer);
 
     SDL_RenderPresent(renderer);
 }
@@ -169,6 +186,15 @@ bool Game::detectCollision()
             return 1;
     }
     return 0;
+}
+
+bool Game::insideButton(Button but)
+{
+    int x, y;
+    SDL_GetMouseState(&x, &y);
+    SDL_Rect mouse = but.getDest();
+    int x1 = mouse.x, x2 = x1 + mouse.w, y1 = mouse.y, y2 = y1 + mouse.h;
+    return (x >= x1 && x <= x2 && y >= y1 && y <= y2);
 }
 
 void Game::Close()
