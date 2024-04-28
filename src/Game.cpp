@@ -84,40 +84,42 @@ void Game::Update()
         PLAY.setSrc(49, 0, 49, 21);
     }
     else
-    {
         PLAY.setSrc(0, 0, 49, 21);
-    }
 
-    player.Update();
-
-    botPipe[0].Update(0, 0);
-    topPipe[0].Update(0, 1);
-    if (updatePipe2 == 0 && botPipe[0].getXpos() <= screenWIDTH / 2 - 35)
+    if (isPlaying)
     {
-        updatePipe2 = 1;
-    }
+        player.Update();
 
-    if (updatePipe2)
-    {
-        botPipe[1].Update(1, 0);
-        topPipe[1].Update(1, 1);
-    }
-
-    isDead = detectCollision();
-    if (isDead)
-    {
-        // gameState = 0;
-        return;
-    }
-
-    // update score ?
-    for (int i = 0; i < 2; i++)
-    {
-        if (botPipe[i].getXpos() + 70 < player.getDest().x && botPipe[i].GetPassedState() == 0)
+        botPipe[0].Update(0, 0);
+        topPipe[0].Update(0, 1);
+        if (updatePipe2 == 0 && botPipe[0].getXpos() <= screenWIDTH / 2 - 35)
         {
-            score++;
-            botPipe[i].SetPassedState();
-            scoreText.CreateText(renderer, scoreFont, blackColor, to_string(score));
+            updatePipe2 = 1;
+        }
+
+        if (updatePipe2)
+        {
+            botPipe[1].Update(1, 0);
+            topPipe[1].Update(1, 1);
+        }
+
+        isDead = detectCollision();
+        if (isDead)
+        {
+            gameState = 0;
+            // isPlaying=0;
+            return;
+        }
+
+        // update score ?
+        for (int i = 0; i < 2; i++)
+        {
+            if (botPipe[i].getXpos() + 70 < player.getDest().x && botPipe[i].GetPassedState() == 0)
+            {
+                score++;
+                botPipe[i].SetPassedState();
+                scoreText.CreateText(renderer, scoreFont, blackColor, to_string(score));
+            }
         }
     }
 }
@@ -129,6 +131,13 @@ void Game::Event()
     {
         gameState = 0;
         return;
+    }
+    if (event.type == SDL_MOUSEBUTTONDOWN)
+    {
+        if (insideButton(PLAY))
+        {
+            isPlaying = 1;
+        }
     }
     if (event.type == SDL_KEYDOWN)
     {
@@ -151,16 +160,20 @@ void Game::Render()
 
     bg.Render(renderer);
 
-    PLAY.Render(renderer);
+    if (!isPlaying)
+        PLAY.Render(renderer);
 
-    // player.Render(renderer);
-    // for (int i = 0; i < 2; i++)
-    // {
-    //     botPipe[i].Render(renderer);
-    //     topPipe[i].Render(renderer);
-    // }
+    if (isPlaying)
+    {
+        player.Render(renderer);
+        for (int i = 0; i < 2; i++)
+        {
+            botPipe[i].Render(renderer);
+            topPipe[i].Render(renderer);
+        }
 
-    // scoreText.Render(renderer);
+        scoreText.Render(renderer);
+    }
 
     SDL_RenderPresent(renderer);
 }
@@ -168,7 +181,7 @@ void Game::Render()
 bool Game::detectCollision()
 {
     SDL_Rect Bird = player.getDest();
-    int bX1 = Bird.x, bX2 = bX1 + 50, bY1 = Bird.y, bY2 = bY1 + 50;
+    int bX1 = Bird.x, bX2 = bX1 + 48, bY1 = Bird.y, bY2 = bY1 + 48;
     if (bY1 <= 0 || bY2 >= screenHEIGHT)
         return 1;
     for (int i = 0; i < 2; i++)

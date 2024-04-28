@@ -38,6 +38,8 @@ private:
     SDL_Event event;
 
 public:
+    bool isPlaying = 0;
+
     Game();
     bool getGameState();
     bool detectCollision();
