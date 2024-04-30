@@ -21,13 +21,20 @@ private:
     bool isAnyKeyPressed;
     bool updatePipe2;
     bool isDead;
+    bool isPlaying;
 
     Player player;
     Background bg;
-    Pipe topPipe[2];
-    Pipe botPipe[2];
+    Pipe *topPipe = new Pipe[2];
+    Pipe *botPipe = new Pipe[2];
 
-    Button PLAY;
+    Button buttons[3];
+    enum
+    {
+        PLAY,
+        OPTIONS,
+        EXIT
+    };
 
     TTF_Font *scoreFont;
     SDL_Color blackColor = {0, 0, 0};
@@ -38,8 +45,6 @@ private:
     SDL_Event event;
 
 public:
-    bool isPlaying = 0;
-
     Game();
     bool getGameState();
     bool detectCollision();
@@ -49,4 +54,5 @@ public:
     void Event();
     void Render();
     void Update();
+    void newGame();
 };

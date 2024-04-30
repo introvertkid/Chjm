@@ -16,8 +16,13 @@ Game::Game()
     }
     botPipe[0].initPipeHeight();
 
-    PLAY.setSrc(0, 0, 49, 21);
-    PLAY.setDest(160, 200, 170, 80);
+    for (int i = 0; i < 3; i++)
+    {
+        buttons[i].setSrc(0, 0, 49, 21);
+    }
+    buttons[PLAY].setDest(160, 200, 170, 80);
+    buttons[OPTIONS].setDest(160, 300, 170, 80);
+    buttons[EXIT].setDest(160, 400, 170, 80);
 }
 
 void Game::Init()
@@ -52,9 +57,9 @@ void Game::Init()
                     botPipe[i].CreateTexture("image/botPipe.png", renderer);
                 }
 
-                PLAY.CreateTexture("image/playButtonUI.png", renderer);
-                if (PLAY.getTexture() == NULL)
-                    cout << "NULL ne " << '\n';
+                buttons[PLAY].CreateTexture("image/playButtonUI.png", renderer);
+                buttons[OPTIONS].CreateTexture("image/optionsButtonUI.png", renderer);
+                buttons[EXIT].CreateTexture("image/exitButtonUI.png", renderer);
             }
             else
             {
@@ -79,12 +84,15 @@ void Game::Init()
 
 void Game::Update()
 {
-    if (insideButton(PLAY))
+    for (int i = 0; i < 3; i++)
     {
-        PLAY.setSrc(49, 0, 49, 21);
+        if (insideButton(buttons[i]))
+        {
+            buttons[i].setSrc(49, 0, 49, 21);
+        }
+        else
+            buttons[i].setSrc(0, 0, 49, 21);
     }
-    else
-        PLAY.setSrc(0, 0, 49, 21);
 
     if (isPlaying)
     {
@@ -106,8 +114,9 @@ void Game::Update()
         isDead = detectCollision();
         if (isDead)
         {
-            gameState = 0;
-            // isPlaying=0;
+            // gameState = 0;
+            newGame();
+            isPlaying = 0;
             return;
         }
 
@@ -134,9 +143,17 @@ void Game::Event()
     }
     if (event.type == SDL_MOUSEBUTTONDOWN)
     {
-        if (insideButton(PLAY))
+        if (insideButton(buttons[PLAY]))
         {
             isPlaying = 1;
+        }
+        else if (insideButton(buttons[OPTIONS]))
+        {
+        }
+        else if (insideButton(buttons[EXIT]))
+        {
+            gameState = 0;
+            return;
         }
     }
     if (event.type == SDL_KEYDOWN)
@@ -161,9 +178,11 @@ void Game::Render()
     bg.Render(renderer);
 
     if (!isPlaying)
-        PLAY.Render(renderer);
-
-    if (isPlaying)
+    {
+        for (int i = 0; i < 3; i++)
+            buttons[i].Render(renderer);
+    }
+    else
     {
         player.Render(renderer);
         for (int i = 0; i < 2; i++)
@@ -176,6 +195,19 @@ void Game::Render()
     }
 
     SDL_RenderPresent(renderer);
+}
+
+void Game::newGame()
+{
+    isAnyKeyPressed = updatePipe2 = isDead = score = 0;
+    // delete[] botPipe;
+    // delete[] topPipe;
+    // Pipe *tempBotPipe = new Pipe[2];
+    // Pipe *tempTopPipe = new Pipe[2];
+    // botPipe = tempBotPipe;
+    // topPipe = tempTopPipe;
+    botPipe[0].initPipeHeight();
+    player.setDest(screenWIDTH / 2, screenHEIGHT / 2, 50, 50);
 }
 
 bool Game::detectCollision()
