@@ -4,7 +4,7 @@ Game::Game()
 {
     window = NULL;
     renderer = NULL;
-    gameState = isAnyKeyPressed = updatePipe2 = isDead = score = 0;
+    gameState = isAnyKeyPressed = updatePipe2 = isDead = score = isPlaying = 0;
 
     player.setSrc(0, 0, 19, 16);
     player.setDest(screenWIDTH / 2, screenHEIGHT / 2, 50, 50);
@@ -13,6 +13,7 @@ Game::Game()
     {
         topPipe[i].setSrc(0, 0, 25, 100);
         botPipe[i].setSrc(0, 0, 25, 100);
+        Xpos[i] = screenWIDTH;
     }
     botPipe[0].initPipeHeight();
 
@@ -80,6 +81,18 @@ void Game::Init()
         scoreText.CreateText(renderer, scoreFont, blackColor, to_string(score));
         scoreText.setDest(screenWIDTH / 2 - 25, 0, 50, 50);
     }
+    if (Mix_Init(1) == 0)
+    {
+        cout << "Couldn't initialize mixer " << Mix_GetError() << '\n';
+    }
+    else
+    {
+        wingSound = Mix_LoadWAV("sound/wingSound.wav");
+        if (wingSound == NULL)
+            cout << "vcl ne: " << '\n';
+        hitSound = Mix_LoadWAV("sound/hitSound.wav");
+        pointSound = Mix_LoadWAV("sound/pointSound.wav");
+    }
 }
 
 void Game::Update()
@@ -100,13 +113,16 @@ void Game::Update()
 
         botPipe[0].Update(0, 0);
         topPipe[0].Update(0, 1);
-        if (updatePipe2 == 0 && botPipe[0].getXpos() <= screenWIDTH / 2 - 35)
+        if (updatePipe2 == 0 && botPipe[0].GetXpos(0) <= screenWIDTH / 2 - 35)
         {
             updatePipe2 = 1;
         }
+        else
+            cout << "dcm vcl ne: " << botPipe[0].GetXpos(0) << '\n';
 
         if (updatePipe2)
         {
+            // cout << "upd pipe 2 ne dcmm " << '\n';
             botPipe[1].Update(1, 0);
             topPipe[1].Update(1, 1);
         }
@@ -123,7 +139,7 @@ void Game::Update()
         // update score ?
         for (int i = 0; i < 2; i++)
         {
-            if (botPipe[i].getXpos() + 70 < player.getDest().x && botPipe[i].GetPassedState() == 0)
+            if (Xpos[i] + 70 < player.getDest().x && botPipe[i].GetPassedState() == 0)
             {
                 score++;
                 botPipe[i].SetPassedState();
@@ -162,7 +178,11 @@ void Game::Event()
         if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_SPACE)
         {
             if (!player.isJumping())
+            {
                 player.Jump();
+                Mix_VolumeChunk(wingSound, 20);
+                Mix_PlayChannel(-1, wingSound, 1);
+            }
             else
                 player.Gravity();
         }
@@ -200,13 +220,12 @@ void Game::Render()
 void Game::newGame()
 {
     isAnyKeyPressed = updatePipe2 = isDead = score = 0;
-    // delete[] botPipe;
-    // delete[] topPipe;
-    // Pipe *tempBotPipe = new Pipe[2];
-    // Pipe *tempTopPipe = new Pipe[2];
-    // botPipe = tempBotPipe;
-    // topPipe = tempTopPipe;
-    botPipe[0].initPipeHeight();
+    for (int i = 0; i < 2; i++)
+    {
+        botPipe[i].initPipeHeight();
+        topPipe[i].initPipeHeight();
+        Xpos[i] = screenWIDTH;
+    }
     player.setDest(screenWIDTH / 2, screenHEIGHT / 2, 50, 50);
 }
 
@@ -253,6 +272,7 @@ void Game::Close()
     SDL_Quit();
     IMG_Quit();
     TTF_Quit();
+    Mix_Quit();
 }
 
 bool Game::getGameState()

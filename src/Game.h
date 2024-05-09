@@ -2,6 +2,7 @@
 #include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #include "TextureManager.h"
 #include "Player.h"
 #include "Background.h"
@@ -25,8 +26,8 @@ private:
 
     Player player;
     Background bg;
-    Pipe *topPipe = new Pipe[2];
-    Pipe *botPipe = new Pipe[2];
+    Pipe topPipe[2];
+    Pipe botPipe[2];
 
     Button buttons[3];
     enum
@@ -39,6 +40,8 @@ private:
     TTF_Font *scoreFont;
     SDL_Color blackColor = {0, 0, 0};
     TextObject scoreText;
+
+    Mix_Chunk *wingSound, *hitSound, *pointSound;
 
     SDL_Window *window;
     SDL_Renderer *renderer;

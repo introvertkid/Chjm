@@ -11,27 +11,28 @@ void Pipe::initPipeHeight()
     {
         botPipeHeight[i] = Gen(10, screenHEIGHT / 2);
         topPipeHeight[i] = screenHEIGHT - botPipeHeight[i] - spaceUD;
+        Xpos[i] = screenWIDTH;
     }
 }
 
 void Pipe::Update(int i, bool isTopPipe)
 {
-    if (Xpos <= -pipeWidth)
+    if (Xpos[i] <= -pipeWidth)
     {
         botPipeHeight[i] = Gen(10, screenHEIGHT / 2);
         topPipeHeight[i] = screenHEIGHT - botPipeHeight[i] - spaceUD;
-        Xpos = screenWIDTH;
+        Xpos[i] = screenWIDTH;
         isPassed = 0;
     }
     int Ypos = (isTopPipe ? 0 : screenHEIGHT - botPipeHeight[i]);
     int H = isTopPipe ? topPipeHeight[i] : botPipeHeight[i];
-    setDest(Xpos, Ypos, pipeWidth, H);
-    Xpos--;
+    setDest(Xpos[i], Ypos, pipeWidth, H);
+    Xpos[i] -= isTopPipe;
 }
 
-int Pipe::getXpos()
+int Pipe::GetXpos(int i)
 {
-    return Xpos;
+    return Xpos[i];
 }
 
 bool Pipe::GetPassedState()
