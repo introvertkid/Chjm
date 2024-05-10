@@ -15,11 +15,8 @@ Game::Game()
     {
         topPipe[i].setSrc(0, 0, 25, 100);
         botPipe[i].setSrc(0, 0, 25, 100);
-
         botPipe[i].initPipeHeight(i);
-        // Xpos[i] = screenWIDTH;
     }
-    // botPipe[0].initPipeHeight(0);
 
     for (int i = 0; i < 3; i++)
     {
@@ -73,6 +70,7 @@ void Game::Init()
             }
         }
     }
+
     if (TTF_Init() < 0)
     {
         cout << "Cannot initialize TTF" << SDL_GetError() << '\n';
@@ -86,15 +84,19 @@ void Game::Init()
         scoreText.CreateText(renderer, scoreFont, blackColor, to_string(score));
         scoreText.setDest(screenWIDTH / 2 - 25, 0, 50, 50);
     }
+
     if (Mix_Init(1) == 0)
     {
         cout << "Couldn't initialize mixer " << Mix_GetError() << '\n';
     }
     else
     {
+        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 120) < 0)
+            std::cout << "Error:" << Mix_GetError() << '\n';
+
         wingSound = Mix_LoadWAV("sound/wingSound.wav");
         if (wingSound == NULL)
-            cout << "vcl ne: " << '\n';
+            cout << "vcl ne: " << Mix_GetError << '\n';
         hitSound = Mix_LoadWAV("sound/hitSound.wav");
         pointSound = Mix_LoadWAV("sound/pointSound.wav");
     }
@@ -184,8 +186,8 @@ void Game::Event()
             if (!player.isJumping())
             {
                 player.Jump();
-                Mix_VolumeChunk(wingSound, 20);
-                Mix_PlayChannel(-1, wingSound, 1);
+                // Mix_VolumeChunk(wingSound, 20);
+                Mix_PlayChannel(1, wingSound, 0);
             }
             else
                 player.Gravity();
