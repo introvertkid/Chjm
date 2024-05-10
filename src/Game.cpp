@@ -15,9 +15,11 @@ Game::Game()
     {
         topPipe[i].setSrc(0, 0, 25, 100);
         botPipe[i].setSrc(0, 0, 25, 100);
-        Xpos[i] = screenWIDTH;
+
+        botPipe[i].initPipeHeight(i);
+        // Xpos[i] = screenWIDTH;
     }
-    botPipe[0].initPipeHeight(0);
+    // botPipe[0].initPipeHeight(0);
 
     for (int i = 0; i < 3; i++)
     {
@@ -120,19 +122,10 @@ void Game::Update()
     {
         player.Update();
 
-        botPipe[0].Update(0, 0);
-        topPipe[0].Update(0, 1);
-        if (updatePipe2 == 0 && botPipe[0].getXpos(0) <= screenWIDTH / 2 - 35)
+        for (int i = 0; i < 2; i++)
         {
-            updatePipe2 = 1;
-        }
-        else
-            cout << "dcm vcl ne: " << botPipe[0].getXpos(0) << '\n';
-
-        if (updatePipe2)
-        {
-            botPipe[1].Update(1, 0);
-            topPipe[1].Update(1, 1);
+            botPipe[i].Update(i, 0);
+            topPipe[i].Update(i, 1);
         }
 
         isDead = detectCollision();
@@ -167,17 +160,20 @@ void Game::Event()
     }
     if (event.type == SDL_MOUSEBUTTONDOWN)
     {
-        if (insideButton(buttons[PLAY]))
+        if (!isPlaying)
         {
-            isPlaying = 1;
-        }
-        else if (insideButton(buttons[OPTIONS]))
-        {
-        }
-        else if (insideButton(buttons[EXIT]))
-        {
-            gameState = 0;
-            return;
+            if (insideButton(buttons[PLAY]))
+            {
+                isPlaying = 1;
+            }
+            else if (insideButton(buttons[OPTIONS]))
+            {
+            }
+            else if (insideButton(buttons[EXIT]))
+            {
+                gameState = 0;
+                return;
+            }
         }
     }
     if (event.type == SDL_KEYDOWN)
@@ -230,6 +226,8 @@ void Game::Render()
 void Game::newGame()
 {
     isAnyKeyPressed = updatePipe2 = isDead = score = 0;
+    scoreText.CreateText(renderer, scoreFont, blackColor, to_string(score));
+
     for (int i = 0; i < 2; i++)
     {
         botPipe[i].initPipeHeight(i);

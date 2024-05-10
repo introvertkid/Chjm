@@ -9,7 +9,7 @@ void Pipe::initPipeHeight(int i)
 {
     botPipeHeight[i] = Gen(10, screenHEIGHT / 2);
     topPipeHeight[i] = screenHEIGHT - botPipeHeight[i] - spaceUD;
-    Xpos[i] = screenWIDTH;
+    Xpos[i] = screenWIDTH + i * (screenWIDTH / 2 + pipeWidth / 2);
 }
 
 void Pipe::Update(int i, bool isTopPipe)
