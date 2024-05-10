@@ -21,9 +21,9 @@ private:
 public:
     Pipe();
     void Update(int i, bool isTopPipe);
-    void initPipeHeight();
+    void initPipeHeight(int i);
     int Gen(int lo, int hi);
     bool GetPassedState();
     void SetPassedState();
-    int GetXpos(int i);
+    int getXpos(int i);
 };

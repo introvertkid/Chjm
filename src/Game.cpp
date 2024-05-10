@@ -9,13 +9,15 @@ Game::Game()
     player.setSrc(0, 0, 19, 16);
     player.setDest(screenWIDTH / 2, screenHEIGHT / 2, 50, 50);
 
+    ground.setSrc(0, 0, 540, 120);
+
     for (int i = 0; i < 2; i++)
     {
         topPipe[i].setSrc(0, 0, 25, 100);
         botPipe[i].setSrc(0, 0, 25, 100);
         Xpos[i] = screenWIDTH;
     }
-    botPipe[0].initPipeHeight();
+    botPipe[0].initPipeHeight(0);
 
     for (int i = 0; i < 3; i++)
     {
@@ -52,6 +54,7 @@ void Game::Init()
 
                 player.CreateTexture("image/2birds.png", renderer);
                 bg.CreateTexture("image/bgDay.png", renderer);
+                ground.CreateTexture("image/ground.png", renderer);
                 for (int i = 0; i < 2; i++)
                 {
                     topPipe[i].CreateTexture("image/topPipe.png", renderer);
@@ -97,6 +100,12 @@ void Game::Init()
 
 void Game::Update()
 {
+    int xMouse = 0, yMouse = 0;
+    SDL_GetMouseState(&xMouse, &yMouse);
+    // cout << xMouse << " " << yMouse << '\n';
+
+    ground.Update();
+
     for (int i = 0; i < 3; i++)
     {
         if (insideButton(buttons[i]))
@@ -113,16 +122,15 @@ void Game::Update()
 
         botPipe[0].Update(0, 0);
         topPipe[0].Update(0, 1);
-        if (updatePipe2 == 0 && botPipe[0].GetXpos(0) <= screenWIDTH / 2 - 35)
+        if (updatePipe2 == 0 && botPipe[0].getXpos(0) <= screenWIDTH / 2 - 35)
         {
             updatePipe2 = 1;
         }
         else
-            cout << "dcm vcl ne: " << botPipe[0].GetXpos(0) << '\n';
+            cout << "dcm vcl ne: " << botPipe[0].getXpos(0) << '\n';
 
         if (updatePipe2)
         {
-            // cout << "upd pipe 2 ne dcmm " << '\n';
             botPipe[1].Update(1, 0);
             topPipe[1].Update(1, 1);
         }
@@ -196,6 +204,7 @@ void Game::Render()
     SDL_RenderClear(renderer);
 
     bg.Render(renderer);
+    ground.Render(renderer);
 
     if (!isPlaying)
     {
@@ -205,6 +214,7 @@ void Game::Render()
     else
     {
         player.Render(renderer);
+
         for (int i = 0; i < 2; i++)
         {
             botPipe[i].Render(renderer);
@@ -222,9 +232,7 @@ void Game::newGame()
     isAnyKeyPressed = updatePipe2 = isDead = score = 0;
     for (int i = 0; i < 2; i++)
     {
-        botPipe[i].initPipeHeight();
-        topPipe[i].initPipeHeight();
-        Xpos[i] = screenWIDTH;
+        botPipe[i].initPipeHeight(i);
     }
     player.setDest(screenWIDTH / 2, screenHEIGHT / 2, 50, 50);
 }

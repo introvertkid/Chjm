@@ -20,5 +20,6 @@ void TextObject::CreateText(SDL_Renderer *ren, TTF_Font *font, SDL_Color color, 
 
 void TextObject::Render(SDL_Renderer *ren)
 {
+    // CAUTION !!!
     SDL_RenderCopy(ren, getTexture(), NULL, &getDest());
 }

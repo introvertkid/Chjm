@@ -9,6 +9,7 @@
 #include "Pipe.h"
 #include "TextObject.h"
 #include "Button.h"
+#include "Ground.h"
 
 using namespace std;
 
@@ -26,6 +27,7 @@ private:
 
     Player player;
     Background bg;
+    Ground ground;
     Pipe topPipe[2];
     Pipe botPipe[2];
 

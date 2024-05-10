@@ -5,14 +5,11 @@ Pipe::Pipe()
     // Xpos = screenWIDTH;
 }
 
-void Pipe::initPipeHeight()
+void Pipe::initPipeHeight(int i)
 {
-    for (int i = 0; i < 2; i++)
-    {
-        botPipeHeight[i] = Gen(10, screenHEIGHT / 2);
-        topPipeHeight[i] = screenHEIGHT - botPipeHeight[i] - spaceUD;
-        Xpos[i] = screenWIDTH;
-    }
+    botPipeHeight[i] = Gen(10, screenHEIGHT / 2);
+    topPipeHeight[i] = screenHEIGHT - botPipeHeight[i] - spaceUD;
+    Xpos[i] = screenWIDTH;
 }
 
 void Pipe::Update(int i, bool isTopPipe)
@@ -30,7 +27,7 @@ void Pipe::Update(int i, bool isTopPipe)
     Xpos[i] -= isTopPipe;
 }
 
-int Pipe::GetXpos(int i)
+int Pipe::getXpos(int i)
 {
     return Xpos[i];
 }
