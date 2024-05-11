@@ -92,11 +92,9 @@ void Game::Init()
     else
     {
         if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 120) < 0)
-            std::cout << "Error:" << Mix_GetError() << '\n';
+            cout << "Error:" << Mix_GetError() << '\n';
 
         wingSound = Mix_LoadWAV("sound/wingSound.wav");
-        if (wingSound == NULL)
-            cout << "vcl ne: " << Mix_GetError << '\n';
         hitSound = Mix_LoadWAV("sound/hitSound.wav");
         pointSound = Mix_LoadWAV("sound/pointSound.wav");
     }
@@ -134,6 +132,7 @@ void Game::Update()
         if (isDead)
         {
             // gameState = 0;
+            Mix_PlayChannel(1, hitSound, 0);
             newGame();
             isPlaying = 0;
             return;
@@ -142,8 +141,9 @@ void Game::Update()
         // update score ?
         for (int i = 0; i < 2; i++)
         {
-            if (Xpos[i] + 70 < player.getDest().x && botPipe[i].GetPassedState() == 0)
+            if (botPipe[i].getXpos(i) + 70 < player.getDest().x && botPipe[i].GetPassedState() == 0)
             {
+                Mix_PlayChannel(1, pointSound, 0);
                 score++;
                 botPipe[i].SetPassedState();
                 scoreText.CreateText(renderer, scoreFont, blackColor, to_string(score));
