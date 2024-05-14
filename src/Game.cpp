@@ -4,14 +4,16 @@ Game::Game()
 {
     window = NULL;
     renderer = NULL;
-    gameState = isAnyKeyPressed = updatePipe2 = isDead = score = isPlaying = 0;
+    gameState = isAnyKeyPressed = updatePipe2 = isDead = score = isPlaying = showPrompt = 0;
 
     player.setSrc(0, 0, 19, 16);
     player.setDest(screenWIDTH / 2, screenHEIGHT / 2, 50, 50);
 
+    prompt.setSrc(0, 0, 507, 102);
+    prompt.setDest(70, 250, 350, 100);
+
     gr1.setSrc(0, 0, 540, 120);
     gr2.setSrc(0, 0, 540, 120);
-
     gr1.setXpos(0);
     gr2.setXpos(480);
 
@@ -26,6 +28,9 @@ Game::Game()
     {
         buttons[i].setSrc(0, 0, 49, 21);
     }
+    buttons[3].setSrc(0, 0, 10, 15);
+    buttons[3].setDest(10, 590, 40, 50);
+
     buttons[PLAY].setDest(160, 200, 170, 80);
     buttons[OPTIONS].setDest(160, 300, 170, 80);
     buttons[EXIT].setDest(160, 400, 170, 80);
@@ -59,6 +64,7 @@ void Game::Init()
                 bg.CreateTexture("image/bgDay.png", renderer);
                 gr1.CreateTexture("image/ground.png", renderer);
                 gr2.CreateTexture("image/ground.png", renderer);
+                prompt.CreateTexture("image/prompt.png", renderer);
                 for (int i = 0; i < 2; i++)
                 {
                     topPipe[i].CreateTexture("image/topPipe.png", renderer);
@@ -68,6 +74,7 @@ void Game::Init()
                 buttons[PLAY].CreateTexture("image/playButtonUI.png", renderer);
                 buttons[OPTIONS].CreateTexture("image/optionsButtonUI.png", renderer);
                 buttons[EXIT].CreateTexture("image/exitButtonUI.png", renderer);
+                buttons[HOWTOPLAY].CreateTexture("image/HowToPlayButtonUI.png", renderer);
             }
             else
             {
@@ -114,14 +121,22 @@ void Game::Update()
     gr1.Update(isPlaying);
     gr2.Update(isPlaying);
 
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 4; i++)
     {
         if (insideButton(buttons[i]))
         {
-            buttons[i].setSrc(49, 0, 49, 21);
+            if (i < 3)
+                buttons[i].setSrc(49, 0, 49, 21);
+            else
+                buttons[i].setSrc(10, 0, 10, 15);
         }
         else
-            buttons[i].setSrc(0, 0, 49, 21);
+        {
+            if (i < 3)
+                buttons[i].setSrc(0, 0, 49, 21);
+            else
+                buttons[i].setSrc(0, 0, 10, 15);
+        }
     }
 
     if (isPlaying)
@@ -156,6 +171,13 @@ void Game::Update()
             }
         }
     }
+    else
+    {
+        if (showPrompt)
+        {
+            prompt.Update();
+        }
+    }
 }
 
 void Game::Event()
@@ -181,6 +203,10 @@ void Game::Event()
             {
                 gameState = 0;
                 return;
+            }
+            else if (insideButton(buttons[HOWTOPLAY]))
+            {
+                showPrompt = 1;
             }
         }
     }
@@ -213,8 +239,15 @@ void Game::Render()
 
     if (!isPlaying)
     {
-        for (int i = 0; i < 3; i++)
-            buttons[i].Render(renderer);
+        if (showPrompt)
+        {
+            prompt.Render(renderer);
+        }
+        else
+        {
+            for (int i = 0; i < 4; i++)
+                buttons[i].Render(renderer);
+        }
     }
     else
     {

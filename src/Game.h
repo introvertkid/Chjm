@@ -10,6 +10,7 @@
 #include "TextObject.h"
 #include "Button.h"
 #include "Ground.h"
+#include "Prompt.h"
 
 using namespace std;
 
@@ -24,19 +25,22 @@ private:
     bool updatePipe2;
     bool isDead;
     bool isPlaying;
+    bool showPrompt;
 
     Player player;
     Background bg;
     Ground gr1, gr2;
     Pipe topPipe[2];
     Pipe botPipe[2];
+    Prompt prompt;
 
-    Button buttons[3];
+    Button buttons[4];
     enum
     {
         PLAY,
         OPTIONS,
-        EXIT
+        EXIT,
+        HOWTOPLAY
     };
 
     TTF_Font *scoreFont;
