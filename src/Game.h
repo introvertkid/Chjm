@@ -27,7 +27,7 @@ private:
 
     Player player;
     Background bg;
-    Ground ground;
+    Ground gr1, gr2;
     Pipe topPipe[2];
     Pipe botPipe[2];
 

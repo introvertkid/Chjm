@@ -19,7 +19,6 @@ private:
     bool isPassed = 0;
 
 public:
-    Pipe();
     void Update(int i, bool isTopPipe);
     void initPipeHeight(int i);
     int Gen(int lo, int hi);

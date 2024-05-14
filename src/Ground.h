@@ -10,6 +10,6 @@ private:
     int Xpos;
 
 public:
-    void Update();
-    int getXpos();
+    void Update(bool isPlaying);
+    void setXpos(int x);
 };

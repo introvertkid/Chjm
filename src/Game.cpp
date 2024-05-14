@@ -9,7 +9,11 @@ Game::Game()
     player.setSrc(0, 0, 19, 16);
     player.setDest(screenWIDTH / 2, screenHEIGHT / 2, 50, 50);
 
-    ground.setSrc(0, 0, 540, 120);
+    gr1.setSrc(0, 0, 540, 120);
+    gr2.setSrc(0, 0, 540, 120);
+
+    gr1.setXpos(0);
+    gr2.setXpos(480);
 
     for (int i = 0; i < 2; i++)
     {
@@ -53,7 +57,8 @@ void Game::Init()
 
                 player.CreateTexture("image/2birds.png", renderer);
                 bg.CreateTexture("image/bgDay.png", renderer);
-                ground.CreateTexture("image/ground.png", renderer);
+                gr1.CreateTexture("image/ground.png", renderer);
+                gr2.CreateTexture("image/ground.png", renderer);
                 for (int i = 0; i < 2; i++)
                 {
                     topPipe[i].CreateTexture("image/topPipe.png", renderer);
@@ -91,7 +96,7 @@ void Game::Init()
     }
     else
     {
-        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 120) < 0)
+        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
             cout << "Error:" << Mix_GetError() << '\n';
 
         wingSound = Mix_LoadWAV("sound/wingSound.wav");
@@ -106,7 +111,8 @@ void Game::Update()
     SDL_GetMouseState(&xMouse, &yMouse);
     // cout << xMouse << " " << yMouse << '\n';
 
-    ground.Update();
+    gr1.Update(isPlaying);
+    gr2.Update(isPlaying);
 
     for (int i = 0; i < 3; i++)
     {
@@ -193,7 +199,7 @@ void Game::Event()
                 player.Gravity();
         }
     }
-    else if (isAnyKeyPressed)
+    else if (isPlaying)
         player.Gravity();
 }
 
@@ -202,7 +208,8 @@ void Game::Render()
     SDL_RenderClear(renderer);
 
     bg.Render(renderer);
-    ground.Render(renderer);
+    gr1.Render(renderer);
+    gr2.Render(renderer);
 
     if (!isPlaying)
     {

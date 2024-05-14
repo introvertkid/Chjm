@@ -1,22 +1,17 @@
 #include "Pipe.h"
 
-Pipe::Pipe()
-{
-    // Xpos = screenWIDTH;
-}
-
 void Pipe::initPipeHeight(int i)
 {
     botPipeHeight[i] = Gen(10, screenHEIGHT / 2);
     topPipeHeight[i] = screenHEIGHT - botPipeHeight[i] - spaceUD;
-    Xpos[i] = screenWIDTH + i * (screenWIDTH / 2 + pipeWidth / 2);
+    Xpos[i] = screenWIDTH + i * (screenWIDTH / 2 + pipeWidth / 2) + 100;
 }
 
 void Pipe::Update(int i, bool isTopPipe)
 {
     if (Xpos[i] <= -pipeWidth)
     {
-        botPipeHeight[i] = Gen(10, screenHEIGHT / 2);
+        botPipeHeight[i] = Gen(10, screenHEIGHT / 2 + 100);
         topPipeHeight[i] = screenHEIGHT - botPipeHeight[i] - spaceUD;
         Xpos[i] = screenWIDTH;
         isPassed = 0;
