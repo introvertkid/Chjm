@@ -1,6 +1,6 @@
 # Chjm
 
-A simple remake of Flappy Bird
+A simple remake of Flappy Bird for UET's first big assignment
 
 ## Overview
 
@@ -17,23 +17,13 @@ A simple remake of Flappy Bird
 
 ### 📥 Installation 
 
-* Clone this repository to your PC by  
-``` git clone https://github.com/introvertkid/Chjm ``` or download here
+* Clone this repository to your PC by  ``` git clone https://github.com/introvertkid/Chjm ``` or download here
 
 ### 🕊️ Executing program
 
 * In VSCode, use ``` Ctr+` ``` to open terminal
 * Type ```make``` to run Makefile
 * Enjoy the game !
-
-## 📞Contact
-
-[![Phong Vũ](https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://www.facebook.com/profile.php?id=100044994040018)
-<br><a href = "mailto: phvu1403@gmail.com"><img alt="Gmail" src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white"></a>
-
-```
-phvu1403@gmail.com
-```
 
 ## Version History
 
@@ -43,6 +33,15 @@ phvu1403@gmail.com
 * 0.2 (Incoming)
     * Add shop to buy new characters
     * Connect with Facebook to play with friends
+
+## 📞Contact
+
+[![Phong Vũ](https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://www.facebook.com/profile.php?id=100044994040018)
+<br><a href = "mailto: phvu1403@gmail.com"><img alt="Gmail" src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white"></a>
+
+```
+phvu1403@gmail.com
+```
 
 ## References
 Special thanks to
