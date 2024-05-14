@@ -4,7 +4,7 @@ void Player::Update()
 {
     animationFrame++;
     animationFrame %= 24;
-    setSrc(animationFrame / 12 * playerWidth, 0, playerWidth, playerHeight);
+    setSrc(animationFrame / 12 * 19, 0, 19, 16);
 }
 
 void Player::Gravity()
@@ -24,7 +24,7 @@ void Player::Gravity()
     {
         Ypos += (accelerator + gravity);
     }
-    Ypos = min((int)Ypos, screenHEIGHT);
+    // Ypos = min((int)Ypos, screenHEIGHT);
     setDest(screenWIDTH / 2, Ypos, 50, 50);
 }
 

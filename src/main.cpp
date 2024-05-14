@@ -6,8 +6,7 @@ int main(int argc, char *argv[])
 {
     myGame->Init();
 
-    const int FPS = 120;
-    const double delayTime = 1000 / 120;
+    const double delayTime = 1000 / 120; // 120 FPS
     double lastTime = 0, currentFrameTime = 0;
 
     while (myGame->getGameState())

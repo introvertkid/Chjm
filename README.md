@@ -1,4 +1,4 @@
-# Chjm
+# Chjm 🐧
 
 A simple remake of Flappy Bird for UET's first big assignment
 
@@ -6,13 +6,13 @@ A simple remake of Flappy Bird for UET's first big assignment
 
 * 📗 Using SDL2 library along with C++ 📘
 
-* 🤖 2 months coding with more than 500 lines of code 💀
+* 🤖 2 months coding with more than 600 lines of code 💀
 
 ## Getting Started
 
 ### 🖥️ Dependencies
 
-* Work with Windows, Linux, MacOS
+* Work with Windows, Linux and MacOS
 * Fundamental extensions for C++ and Makefile
 
 ### 📥 Installation 
@@ -21,7 +21,7 @@ A simple remake of Flappy Bird for UET's first big assignment
 
 ### 🕊️ Executing program
 
-* In VSCode, use ``` Ctr+` ``` to open terminal
+* In VSCode, use ``` Ctrl + ` ``` to open terminal
 * Type ```make``` to run Makefile
 * Enjoy the game !
 
@@ -44,8 +44,12 @@ phvu1403@gmail.com
 ```
 
 ## References
-Special thanks to
+💗 Special thanks to 💖
 *  Nguyen Thanh Dong's big hit in 2013 for inspiring me
 * [Lazy Foo's Productions](https://lazyfoo.net/tutorials/SDL/index.php) for SDL2 tutorial
 * [Askari Hassan](https://www.youtube.com/@askarihassan2632) for "How to make Flappy Bird" tutorial 
-* [NNBnh](https://github.com/NNBnh) for public Flappy Bird's assets
+* [Duc Le](https://github.com/DuCLeK65t) for public Flappy Bird-like's assets
+
+---
+<h1 align="center"> 😴 Code by me ! 🛌</h1>
+<p align="center"><i>June 2024</i></p>

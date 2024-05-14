@@ -15,12 +15,14 @@ private:
     const int screenHEIGHT = 650;
     const int spaceUD = 200;
     const int pipeWidth = 70;
+    const int groundHEIGHT = 108;
     int pipeH;
     bool isPassed = 0;
 
 public:
     void Update(int i, bool isTopPipe);
     void initPipeHeight(int i);
+    void genHeight(int i);
     int Gen(int lo, int hi);
     bool GetPassedState();
     void SetPassedState();

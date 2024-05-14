@@ -4,7 +4,7 @@ Game::Game()
 {
     window = NULL;
     renderer = NULL;
-    gameState = isAnyKeyPressed = updatePipe2 = isDead = score = isPlaying = showPrompt = 0;
+    gameState = isAnyKeyPressed = isDead = score = isPlaying = showPrompt = 0;
 
     player.setSrc(0, 0, 19, 16);
     player.setDest(screenWIDTH / 2, screenHEIGHT / 2, 50, 50);
@@ -29,7 +29,7 @@ Game::Game()
         buttons[i].setSrc(0, 0, 49, 21);
     }
     buttons[3].setSrc(0, 0, 10, 15);
-    buttons[3].setDest(10, 590, 40, 50);
+    buttons[3].setDest(10, 580, 40, 60);
 
     buttons[PLAY].setDest(160, 200, 170, 80);
     buttons[OPTIONS].setDest(160, 300, 170, 80);
@@ -190,6 +190,11 @@ void Game::Event()
     }
     if (event.type == SDL_MOUSEBUTTONDOWN)
     {
+        if (showPrompt)
+        {
+            showPrompt = 0;
+            return;
+        }
         if (!isPlaying)
         {
             if (insideButton(buttons[PLAY]))
@@ -267,21 +272,24 @@ void Game::Render()
 
 void Game::newGame()
 {
-    isAnyKeyPressed = updatePipe2 = isDead = score = 0;
+    isAnyKeyPressed = isDead = score = 0;
     scoreText.CreateText(renderer, scoreFont, blackColor, to_string(score));
+
+    player.setDest(screenWIDTH / 2, screenHEIGHT / 2, 50, 50);
 
     for (int i = 0; i < 2; i++)
     {
         botPipe[i].initPipeHeight(i);
+        botPipe[i].Update(i, 0);
+        topPipe[i].Update(i, 1);
     }
-    player.setDest(screenWIDTH / 2, screenHEIGHT / 2, 50, 50);
 }
 
 bool Game::detectCollision()
 {
     SDL_Rect Bird = player.getDest();
-    int bX1 = Bird.x, bX2 = bX1 + 48, bY1 = Bird.y, bY2 = bY1 + 48;
-    if (bY1 <= 0 || bY2 >= screenHEIGHT)
+    int bX1 = Bird.x, bX2 = bX1 + 50, bY1 = Bird.y, bY2 = bY1 + 50;
+    if (bY1 <= -5 || bY2 >= 545)
         return 1;
     for (int i = 0; i < 2; i++)
     {
