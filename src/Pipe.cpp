@@ -15,6 +15,7 @@ void Pipe::initPipeHeight(int i)
 {
     genHeight(i);
     Xpos[i] = screenWIDTH + i * (screenWIDTH / 2 + pipeWidth / 2) + 100;
+    isPassed = 0;
 }
 
 void Pipe::Update(int i, bool isTopPipe)

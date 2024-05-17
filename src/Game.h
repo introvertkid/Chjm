@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <fstream>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
@@ -33,6 +34,7 @@ private:
     Pipe topPipe[2];
     Pipe botPipe[2];
     Prompt prompt;
+    Object Highscore;
 
     Button buttons[4];
     enum
@@ -45,7 +47,7 @@ private:
 
     TTF_Font *scoreFont;
     SDL_Color blackColor = {0, 0, 0};
-    TextObject scoreText;
+    TextObject scoreText, HighscoreText;
 
     Mix_Chunk *wingSound, *hitSound, *pointSound;
 

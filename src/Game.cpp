@@ -12,6 +12,8 @@ Game::Game()
     prompt.setSrc(0, 0, 507, 102);
     prompt.setDest(70, 250, 350, 100);
 
+    Highscore.setSrc(0, 0, 444, 282);
+
     gr1.setSrc(0, 0, 540, 120);
     gr2.setSrc(0, 0, 540, 120);
     gr1.setXpos(0);
@@ -65,6 +67,7 @@ void Game::Init()
                 gr1.CreateTexture("image/ground.png", renderer);
                 gr2.CreateTexture("image/ground.png", renderer);
                 prompt.CreateTexture("image/prompt.png", renderer);
+                Highscore.CreateTexture("image/highscore.png", renderer);
                 for (int i = 0; i < 2; i++)
                 {
                     topPipe[i].CreateTexture("image/topPipe.png", renderer);
@@ -94,7 +97,7 @@ void Game::Init()
             cout << "Cannot open font: " << SDL_GetError() << '\n';
 
         scoreText.CreateText(renderer, scoreFont, blackColor, to_string(score));
-        scoreText.setDest(screenWIDTH / 2 - 25, 0, 50, 50);
+        scoreText.setDest(screenWIDTH / 2 - 25, 5, 50, 50);
     }
 
     if (Mix_Init(1) == 0)
@@ -114,12 +117,12 @@ void Game::Init()
 
 void Game::Update()
 {
-    int xMouse = 0, yMouse = 0;
-    SDL_GetMouseState(&xMouse, &yMouse);
+    // int xMouse = 0, yMouse = 0;
+    // SDL_GetMouseState(&xMouse, &yMouse);
     // cout << xMouse << " " << yMouse << '\n';
 
-    gr1.Update(isPlaying);
-    gr2.Update(isPlaying);
+    gr1.Update(isPlaying & ~isDead);
+    gr2.Update(isPlaying & ~isDead);
 
     for (int i = 0; i < 4; i++)
     {
@@ -143,31 +146,33 @@ void Game::Update()
     {
         player.Update();
 
-        for (int i = 0; i < 2; i++)
+        if (!isDead)
         {
-            botPipe[i].Update(i, 0);
-            topPipe[i].Update(i, 1);
-        }
-
-        isDead = detectCollision();
-        if (isDead)
-        {
-            // gameState = 0;
-            Mix_PlayChannel(1, hitSound, 0);
-            newGame();
-            isPlaying = 0;
-            return;
-        }
-
-        // update score ?
-        for (int i = 0; i < 2; i++)
-        {
-            if (botPipe[i].getXpos(i) + 70 < player.getDest().x && botPipe[i].GetPassedState() == 0)
+            for (int i = 0; i < 2; i++)
             {
-                Mix_PlayChannel(1, pointSound, 0);
-                score++;
-                botPipe[i].SetPassedState();
-                scoreText.CreateText(renderer, scoreFont, blackColor, to_string(score));
+                botPipe[i].Update(i, 0);
+                topPipe[i].Update(i, 1);
+            }
+
+            isDead = detectCollision();
+            if (isDead)
+            {
+                Mix_PlayChannel(-1, hitSound, 0);
+                // newGame();
+                // isPlaying = 0;
+                return;
+            }
+
+            // update score ?
+            for (int i = 0; i < 2; i++)
+            {
+                if (botPipe[i].getXpos(i) + 70 < player.getDest().x && botPipe[i].GetPassedState() == 0)
+                {
+                    Mix_PlayChannel(-1, pointSound, 0);
+                    score++;
+                    botPipe[i].SetPassedState();
+                    scoreText.CreateText(renderer, scoreFont, blackColor, to_string(score));
+                }
             }
         }
     }
@@ -223,14 +228,13 @@ void Game::Event()
             if (!player.isJumping())
             {
                 player.Jump();
-                // Mix_VolumeChunk(wingSound, 20);
-                Mix_PlayChannel(1, wingSound, 0);
+                Mix_PlayChannel(-1, wingSound, 0);
             }
             else
                 player.Gravity();
         }
     }
-    else if (isPlaying)
+    else if (isPlaying && !isDead)
         player.Gravity();
 }
 
@@ -257,11 +261,33 @@ void Game::Render()
     else
     {
         player.Render(renderer);
-
-        for (int i = 0; i < 2; i++)
+        if (isDead)
         {
-            botPipe[i].Render(renderer);
-            topPipe[i].Render(renderer);
+            ifstream fi("best.txt");
+            int best;
+            fi >> best;
+            best = max(best, score);
+            fi.close();
+
+            ofstream fo("best.txt");
+            fo << best;
+            fo.close();
+
+            HighscoreText.CreateText(renderer, scoreFont, blackColor, to_string(best));
+            HighscoreText.setDest(315, 215, 50, 50);
+            scoreText.setDest(150, 240, 60, 80);
+            Highscore.setDest(50, 90, 400, 400);
+
+            Highscore.Render(renderer);
+            HighscoreText.Render(renderer);
+        }
+        else
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                botPipe[i].Render(renderer);
+                topPipe[i].Render(renderer);
+            }
         }
 
         scoreText.Render(renderer);
@@ -276,6 +302,7 @@ void Game::newGame()
     scoreText.CreateText(renderer, scoreFont, blackColor, to_string(score));
 
     player.setDest(screenWIDTH / 2, screenHEIGHT / 2, 50, 50);
+    scoreText.setDest(screenWIDTH / 2 - 25, 5, 50, 50);
 
     for (int i = 0; i < 2; i++)
     {

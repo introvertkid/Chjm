@@ -45,7 +45,7 @@ phvu1403@gmail.com
 
 ## References
 💗 Special thanks to 💖
-*  Nguyen Thanh Dong's big hit in 2013 for inspiring me
+*  Nguyen Ha Dong's big hit in 2013 for inspiring me
 * [Lazy Foo's Productions](https://lazyfoo.net/tutorials/SDL/index.php) for SDL2 tutorial
 * [Askari Hassan](https://www.youtube.com/@askarihassan2632) for "How to make Flappy Bird" tutorial 
 * [Duc Le](https://github.com/DuCLeK65t) for public Flappy Bird-like's assets
