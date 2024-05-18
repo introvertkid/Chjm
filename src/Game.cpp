@@ -319,7 +319,7 @@ void Game::newGame()
     isAnyKeyPressed = isDead = score = 0;
     scoreText.CreateText(renderer, scoreFont, blackColor, to_string(score));
 
-    player.setDest(screenWIDTH / 2, screenHEIGHT / 2, 50, 50);
+    player.setNewPlayer();
     scoreText.setDest(screenWIDTH / 2 - 25, 5, 50, 50);
 
     for (int i = 0; i < 2; i++)
