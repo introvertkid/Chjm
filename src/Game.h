@@ -36,13 +36,14 @@ private:
     Prompt prompt;
     Object Highscore;
 
-    Button buttons[4];
+    Button buttons[5];
     enum
     {
         PLAY,
         OPTIONS,
         EXIT,
-        HOWTOPLAY
+        REPLAY,
+        HOWTOPLAY,
     };
 
     TTF_Font *scoreFont;
