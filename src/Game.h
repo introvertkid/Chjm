@@ -36,13 +36,14 @@ private:
     Prompt prompt;
     Object Highscore;
 
-    Button buttons[5];
+    Button buttons[6];
     enum
     {
         PLAY,
         OPTIONS,
         EXIT,
         REPLAY,
+        BACK,
         HOWTOPLAY,
     };
 
