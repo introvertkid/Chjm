@@ -6,7 +6,7 @@ A simple remake of Flappy Bird for UET's first big assignment
 
 * 📗 Using SDL2 library along with C++ 📘
 
-* 🤖 2 months coding with more than 600 lines of code 💀
+* 🤖 2 months coding with more than 700 lines of code 💀
 
 ## Getting Started
 
@@ -31,8 +31,8 @@ A simple remake of Flappy Bird for UET's first big assignment
     * Initial Release
 
 * 0.2 (Incoming)
-    * Add shop to buy new characters
-    * Connect with Facebook to play with friends
+    * Add shop feature to buy new characters
+    * Connect with Facebook to share highscore and challenge friends
 
 ## 📞Contact
 
