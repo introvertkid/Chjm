@@ -6,6 +6,7 @@ class Player : public Object
 private:
     const int screenWIDTH = 480;
     const int screenHEIGHT = 650;
+    const int groundYpos = 542;
     int animationFrame = 0;
 
     double gravity = 0.2;

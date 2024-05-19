@@ -20,7 +20,6 @@ class Game
 private:
     const int screenWIDTH = 480;
     const int screenHEIGHT = 650;
-    const int groundHEIGHT = 108;
     int score;
     bool gameState;
     bool isAnyKeyPressed;
@@ -51,7 +50,7 @@ private:
     SDL_Color blackColor = {0, 0, 0};
     TextObject scoreText, HighscoreText;
 
-    Mix_Chunk *wingSound, *hitSound, *pointSound;
+    Mix_Chunk *wingSound, *hitSound, *pointSound, *fallSound;
 
     SDL_Window *window;
     SDL_Renderer *renderer;

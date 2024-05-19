@@ -32,7 +32,7 @@ void Player::Gravity()
     {
         Ypos += (accelerator + gravity);
     }
-    // Ypos = min((int)Ypos, screenHEIGHT);
+    Ypos = min((int)Ypos, groundYpos - 50);
     setDest(screenWIDTH / 2, Ypos, 50, 50);
 }
 

@@ -116,6 +116,7 @@ void Game::Init()
         wingSound = Mix_LoadWAV("sound/wingSound.wav");
         hitSound = Mix_LoadWAV("sound/hitSound.wav");
         pointSound = Mix_LoadWAV("sound/pointSound.wav");
+        fallSound = Mix_LoadWAV("sound/fallSound.wav");
     }
 }
 
@@ -162,8 +163,8 @@ void Game::Update()
             if (isDead)
             {
                 Mix_PlayChannel(-1, hitSound, 0);
-                // newGame();
-                // isPlaying = 0;
+                SDL_Delay(500);
+                Mix_PlayChannel(-1, fallSound, 0);
                 return;
             }
 
@@ -249,7 +250,7 @@ void Game::Event()
                 player.Gravity();
         }
     }
-    else if (isPlaying && !isDead)
+    else if (isPlaying)
         player.Gravity();
 }
 
@@ -334,7 +335,7 @@ bool Game::detectCollision()
 {
     SDL_Rect Bird = player.getDest();
     int bX1 = Bird.x, bX2 = bX1 + 50, bY1 = Bird.y, bY2 = bY1 + 50;
-    if (bY1 <= -5 || bY2 >= 545)
+    if (bY1 <= -5 || bY2 >= 541)
         return 1;
     for (int i = 0; i < 2; i++)
     {
