@@ -19,6 +19,9 @@ A simple remake of Flappy Bird for UET's first big assignment
 
 * Clone this repository to your PC by  ``` git clone https://github.com/introvertkid/Chjm ``` or download here
 
+    * Create a ``` best.txt ``` in main folder to save highscore
+
+
 ### 🕊️ Executing program
 
 * In VSCode, use ``` Ctrl + ` ``` to open terminal
