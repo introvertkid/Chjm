@@ -30,12 +30,15 @@ A simple remake of Flappy Bird for UET's first big assignment
 
 ## Version History
 
-* 0.1
-    * Initial Release
+* 0.1 
+    * Basic version
 
-* 0.2 (Incoming)
-    * Add shop feature to buy new characters
-    * Connect with Facebook to share highscore and challenge friends
+* 0.2 (Initial release)
+    * Added feature to change skins
+
+* 0.3 (Incoming)
+    * Add level feature
+    * Connect with Facebook to share highscore with friends
 
 ## 📞Contact
 
@@ -55,4 +58,4 @@ phvu1403@gmail.com
 
 ---
 <h1 align="center"> 😴 Code by me ! 🛌</h1>
-<p align="center"><i>June 2024</i></p>
+<p align="center"><i>August 2024</i></p>
