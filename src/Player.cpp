@@ -4,7 +4,7 @@ void Player::Update()
 {
     animationFrame++;
     animationFrame %= 24;
-    setSrc(animationFrame / 12 * 19, 0, 19, 16);
+    setSrc(animationFrame / 12 * 19, 16 * currentSkin, 19, 16 + 16 * currentSkin);
 }
 
 void Player::setNewPlayer()
@@ -49,6 +49,13 @@ void Player::Jump()
     {
         Gravity();
     }
+}
+
+void Player::changeSkin()
+{
+    currentSkin++;
+    currentSkin %= 2;
+    setSrc(animationFrame / 12 * 19, 16 * currentSkin, 19, 16 + 16 * currentSkin);
 }
 
 bool Player::isJumping()

@@ -26,6 +26,7 @@ private:
     bool isDead;
     bool isPlaying;
     bool showPrompt;
+    bool inSetting;
 
     Player player;
     Background bg;
@@ -60,7 +61,7 @@ public:
     Game();
     bool getGameState();
     bool detectCollision();
-    bool insideButton(Button b);
+    bool insideObject(Object b);
     void Init();
     void Close();
     void Event();

@@ -4,7 +4,7 @@ Game::Game()
 {
     window = NULL;
     renderer = NULL;
-    gameState = isAnyKeyPressed = isDead = score = isPlaying = showPrompt = 0;
+    gameState = isAnyKeyPressed = isDead = score = isPlaying = showPrompt = inSetting = 0;
 
     player.setSrc(0, 0, 19, 16);
     player.setDest(screenWIDTH / 2, screenHEIGHT / 2, 50, 50);
@@ -64,7 +64,7 @@ void Game::Init()
 
                 gameState = 1;
 
-                player.CreateTexture("image/2birds.png", renderer);
+                player.CreateTexture("image/birds.png", renderer);
                 bg.CreateTexture("image/bgDay.png", renderer);
                 gr1.CreateTexture("image/ground.png", renderer);
                 gr2.CreateTexture("image/ground.png", renderer);
@@ -122,16 +122,12 @@ void Game::Init()
 
 void Game::Update()
 {
-    // int xMouse = 0, yMouse = 0;
-    // SDL_GetMouseState(&xMouse, &yMouse);
-    // cout << xMouse << " " << yMouse << '\n';
-
     gr1.Update(isPlaying & ~isDead);
     gr2.Update(isPlaying & ~isDead);
 
     for (int i = 0; i < 6; i++)
     {
-        if (insideButton(buttons[i]))
+        if (insideObject(buttons[i]))
         {
             if (i < 5)
                 buttons[i].setSrc(49, 0, 49, 21);
@@ -205,32 +201,44 @@ void Game::Event()
             showPrompt = 0;
             return;
         }
+        if (inSetting)
+        {
+            if (insideObject(player))
+            {
+                player.changeSkin();
+            }
+            else
+                inSetting = 0;
+            return;
+        }
         if (!isPlaying)
         {
-            if (insideButton(buttons[PLAY]))
+            if (insideObject(buttons[PLAY]))
             {
                 isPlaying = 1;
             }
-            else if (insideButton(buttons[OPTIONS]))
+            else if (insideObject(buttons[OPTIONS]))
             {
+                inSetting = 1;
+                player.setDest(screenWIDTH / 2, screenHEIGHT / 2, 50, 50);
             }
-            else if (insideButton(buttons[EXIT]))
+            else if (insideObject(buttons[EXIT]))
             {
                 gameState = 0;
                 return;
             }
-            else if (insideButton(buttons[HOWTOPLAY]))
+            else if (insideObject(buttons[HOWTOPLAY]))
             {
                 showPrompt = 1;
             }
         }
         else
         {
-            if (insideButton(buttons[REPLAY]))
+            if (insideObject(buttons[REPLAY]))
             {
                 newGame();
             }
-            else if (insideButton(buttons[BACK]))
+            else if (insideObject(buttons[BACK]))
             {
                 isPlaying = 0;
             }
@@ -268,7 +276,11 @@ void Game::Render()
         {
             prompt.Render(renderer);
         }
-        else
+        else if (inSetting)
+        {
+            player.Render(renderer);
+        }
+        else // render main menu
         {
             for (int i = 0; i < 3; i++)
                 buttons[i].Render(renderer);
@@ -354,11 +366,11 @@ bool Game::detectCollision()
     return 0;
 }
 
-bool Game::insideButton(Button but)
+bool Game::insideObject(Object obj)
 {
     int x, y;
     SDL_GetMouseState(&x, &y);
-    SDL_Rect mouse = but.getDest();
+    SDL_Rect mouse = obj.getDest();
     int x1 = mouse.x, x2 = x1 + mouse.w, y1 = mouse.y, y2 = y1 + mouse.h;
     return (x >= x1 && x <= x2 && y >= y1 && y <= y2);
 }

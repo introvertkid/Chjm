@@ -8,6 +8,7 @@ private:
     const int screenHEIGHT = 650;
     const int groundYpos = 542;
     int animationFrame = 0;
+    int currentSkin = 0;
 
     double gravity = 0.2;
     double jumpHeight = -6;
@@ -23,4 +24,5 @@ public:
     void Jump();
     void Gravity();
     void setNewPlayer();
+    void changeSkin();
 };
