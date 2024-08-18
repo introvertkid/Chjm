@@ -6,7 +6,7 @@ A simple remake of Flappy Bird for UET's first big assignment
 
 * 📗 Using SDL2 library along with C++ 📘
 
-* 🤖 2 months coding with more than 700 lines of code 💀
+* 🤖 2 months coding with more than 800 lines of code 💀
 
 ## Getting Started
 
@@ -17,16 +17,11 @@ A simple remake of Flappy Bird for UET's first big assignment
 
 ### 📥 Installation 
 
-* Clone this repository to your PC by  ``` git clone https://github.com/introvertkid/Chjm ``` or download here
-
-    * Create a ``` best.txt ``` in main folder to save highscore
-
+* Clone this repository to your PC by  ``` git clone https://github.com/introvertkid/Chjm ```
+* Download the portable version [here](https://github.com/user-attachments/files/16649617/chjm.zip) (no setup needed)
 
 ### 🕊️ Executing program
-
-* In VSCode, use ``` Ctrl + ` ``` to open terminal
-* Type ```make``` to run Makefile
-* Enjoy the game !
+* Run ```main.exe``` to play
 
 ## Version History
 
@@ -37,7 +32,7 @@ A simple remake of Flappy Bird for UET's first big assignment
     * Added feature to change skins
 
 * 0.3 (Incoming)
-    * Add level feature
+    * Add game mode feature
     * Connect with Facebook to share highscore with friends
 
 ## 📞Contact

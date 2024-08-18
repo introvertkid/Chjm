@@ -220,7 +220,7 @@ void Game::Event()
             else if (insideObject(buttons[OPTIONS]))
             {
                 inSetting = 1;
-                player.setDest(screenWIDTH / 2, screenHEIGHT / 2, 50, 50);
+                player.setDest(screenWIDTH / 2 - 20, screenHEIGHT / 2, 50, 50);
             }
             else if (insideObject(buttons[EXIT]))
             {
